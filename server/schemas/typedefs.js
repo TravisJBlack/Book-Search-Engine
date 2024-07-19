@@ -2,7 +2,7 @@ const typeDefs = `
     type Book {
         authors: [String]
         description: String!
-        bookId String!
+        bookId: String!
         image: String
         link: String
         title: String!
@@ -22,7 +22,7 @@ const typeDefs = `
     }
 
     type Query {
-        getSingleUser(userId: ID, username: String): User
+        getSingleUser(userId: ID!): User
     }
     
     type Mutation {
@@ -32,3 +32,5 @@ const typeDefs = `
         deleteBook(bookId: String!): User
     }
 `;
+
+module.exports = typeDefs;
