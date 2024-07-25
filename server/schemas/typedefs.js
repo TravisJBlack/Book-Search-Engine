@@ -5,7 +5,7 @@ const typeDefs = `
         bookId: String!
         image: String
         link: String
-        title: String!
+        title:String!
     }
 
     type User {
@@ -13,7 +13,7 @@ const typeDefs = `
         username: String!
         email: String!
         password: String!
-        savedBooks: Book
+        savedBooks: [Book]
     }
 
     type Auth {
@@ -22,7 +22,7 @@ const typeDefs = `
     }
 
     type Query {
-        getSingleUser(userId: ID!): User
+        getMe: User
     }
     
     type Mutation {

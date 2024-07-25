@@ -3,8 +3,8 @@ const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
     Query: {
-        getSingleUser: async (parent, args) => {
-            return User.findOne(args._id)
+        getMe: async (parent, args, context) => {
+            return User.findOne( { _id: context.user._id})
         }
     },
 
@@ -15,7 +15,7 @@ const resolvers = {
             return { token, user }
         },
         login: async (parent, { username, email, password }) => {
-            const user = ({ $or: [{ username: username }, { email: email }] });
+            const user = await User.findOne({ $or: [{ username: username }, { email: email }] });
 
             if (!user) {
                 throw AuthenticationError;
@@ -31,11 +31,12 @@ const resolvers = {
 
             return { token, user };
         },
-        saveBook: async (parent, { bookId, description, title, authors, image, link }, context) => {
+        saveBook: async (parent, {bookId, description, title, authors, image, link}, context) => {
             if (context.user) {
+
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: bookId, description, title, authors, image, link } },
+                    { $addToSet: { savedBooks: {bookId, description, title, authors, image, link} } },
                     { new: true, runValidators: true }
                 );
 
